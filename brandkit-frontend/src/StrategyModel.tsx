@@ -86,7 +86,7 @@ const StrategyModel: React.FC = () => {
 
   // Load BrandKit model
   useEffect(() => {
-    fetch('http://localhost:5050/api/strategy')
+            fetch('https://brandkit-production.up.railway.app/api/strategy')
       .then((res) => res.json())
       .then((sections: Section[]) => {
         setData(sections);
@@ -182,7 +182,7 @@ const StrategyModel: React.FC = () => {
     setSubmitting(true);
     setEditingFeedback((prev) => ({ ...prev, [step.id]: null }));
     try {
-      const res = await fetch('http://localhost:5050/api/answer', {
+      const res = await fetch('https://brandkit-production.up.railway.app/api/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stepId: step.id, answer: editingAnswers[step.id] ?? '' }),
@@ -259,7 +259,7 @@ const StrategyModel: React.FC = () => {
       setSectionConclusions({});
       setOverallConclusion('');
       try {
-        const res = await fetch('http://localhost:5050/api/overview-feedback', {
+        const res = await fetch('https://brandkit-production.up.railway.app/api/overview-feedback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ answers, sections: data }),
