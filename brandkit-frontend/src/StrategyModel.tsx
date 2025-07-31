@@ -566,6 +566,10 @@ const StrategyModel: React.FC = () => {
                     onClick={() => {
                       setTab('editor');
                       setSelectedSectionIdx(idx);
+                      // Scroll to top of the page after a brief delay to ensure tab switch completes
+                      setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }, 100);
                     }}
                     style={{
                       flex: '1 1 350px',
