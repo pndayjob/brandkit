@@ -460,7 +460,7 @@ const StrategyModel: React.FC = () => {
               fontWeight: 'bold',
               fontSize: '1.05rem',
               cursor: 'pointer',
-              marginLeft: '2rem',
+              marginLeft: 'auto',
               fontFamily,
               boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
               letterSpacing: 1,
@@ -473,9 +473,9 @@ const StrategyModel: React.FC = () => {
             src="/logo.png" 
             alt="Got Brand?" 
             style={{ 
-              height: '2rem', 
+              height: '3.5rem', 
               width: 'auto', 
-              marginLeft: '1rem',
+              marginLeft: '1.5rem',
               cursor: 'pointer'
             }} 
             title="Got Brand?"
