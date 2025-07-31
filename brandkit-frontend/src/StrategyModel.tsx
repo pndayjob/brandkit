@@ -532,6 +532,19 @@ const StrategyModel: React.FC = () => {
                     return <StarRating score={avgScore} />;
                   })()}
                 </div>
+                {(() => {
+                  const totalCompleted = sectionStatuses.reduce((sum, section) => sum + section.completed, 0);
+                  const totalSteps = sectionStatuses.reduce((sum, section) => sum + section.total, 0);
+                  const overallProgress = totalSteps > 0 ? Math.round((totalCompleted / totalSteps) * 100) : 0;
+                  return (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ marginBottom: 10, fontWeight: 500, color: palette.text }}>
+                        {totalCompleted} / {totalSteps} steps completed
+                      </div>
+                      <ProgressBar percent={overallProgress} color={palette.progress} height={8} />
+                    </div>
+                  );
+                })()}
                 <div style={{ fontStyle: 'italic', lineHeight: 1.7 }}>{overallConclusion}</div>
               </div>
             ) : null}
@@ -577,10 +590,9 @@ const StrategyModel: React.FC = () => {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
                       <span style={{ fontWeight: 700, fontSize: '1.15rem', flex: 1 }}>{section.section}</span>
-                      <span style={{ color: palette.progress, fontSize: '0.9rem', fontWeight: 500 }}>Click to edit →</span>
-                      {status === 'incomplete' && <span style={{ color: palette.warning, fontWeight: 700, marginLeft: '0.5rem' }}>{highlight}</span>}
-                      {status === 'attention' && <span style={{ color: palette.error, fontWeight: 700, marginLeft: '0.5rem' }}>{highlight}</span>}
-                      {status === 'ok' && <span style={{ color: palette.check, fontWeight: 700, marginLeft: '0.5rem' }}>✔</span>}
+                      {status === 'incomplete' && <span style={{ color: palette.warning, fontWeight: 700 }}>{highlight}</span>}
+                      {status === 'attention' && <span style={{ color: palette.error, fontWeight: 700 }}>{highlight}</span>}
+                      {status === 'ok' && <span style={{ color: palette.check, fontWeight: 700 }}>✔</span>}
                     </div>
                     <div style={{ marginBottom: 10, fontWeight: 500, color: palette.text }}>
                       {completed} / {total} steps completed
