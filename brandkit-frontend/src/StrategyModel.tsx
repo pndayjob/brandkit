@@ -548,21 +548,39 @@ const StrategyModel: React.FC = () => {
                   highlight = 'Needs improvement';
                 }
                 return (
-                  <div key={section.section} style={{
-                    flex: '1 1 350px',
-                    background: palette.card,
-                    borderRadius: 16,
-                    padding: '2rem',
-                    boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
-                    border: `2px solid ${borderColor}`,
-                    minWidth: 320,
-                    marginBottom: 16,
-                  }}>
+                  <div 
+                    key={section.section} 
+                    onClick={() => {
+                      setTab('editor');
+                      setSelectedSectionIdx(idx);
+                    }}
+                    style={{
+                      flex: '1 1 350px',
+                      background: palette.card,
+                      borderRadius: 16,
+                      padding: '2rem',
+                      boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+                      border: `2px solid ${borderColor}`,
+                      minWidth: 320,
+                      marginBottom: 16,
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.12)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.07)';
+                    }}
+                  >
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
                       <span style={{ fontWeight: 700, fontSize: '1.15rem', flex: 1 }}>{section.section}</span>
-                      {status === 'incomplete' && <span style={{ color: palette.warning, fontWeight: 700 }}>{highlight}</span>}
-                      {status === 'attention' && <span style={{ color: palette.error, fontWeight: 700 }}>{highlight}</span>}
-                      {status === 'ok' && <span style={{ color: palette.check, fontWeight: 700 }}>✔</span>}
+                      <span style={{ color: palette.progress, fontSize: '0.9rem', fontWeight: 500 }}>Click to edit →</span>
+                      {status === 'incomplete' && <span style={{ color: palette.warning, fontWeight: 700, marginLeft: '0.5rem' }}>{highlight}</span>}
+                      {status === 'attention' && <span style={{ color: palette.error, fontWeight: 700, marginLeft: '0.5rem' }}>{highlight}</span>}
+                      {status === 'ok' && <span style={{ color: palette.check, fontWeight: 700, marginLeft: '0.5rem' }}>✔</span>}
                     </div>
                     <div style={{ marginBottom: 10, fontWeight: 500, color: palette.text }}>
                       {completed} / {total} steps completed
