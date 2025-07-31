@@ -60,7 +60,7 @@ const Dashboard: React.FC<DashboardProps> = ({ data, answers }) => {
 
   return (
     <div style={{ border: '1px solid #ddd', borderRadius: 8, padding: '2rem', marginBottom: '2rem', background: '#fafbfc' }}>
-      <h2>BrandKit Dashboard</h2>
+              <h2>Got Brand? Dashboard</h2>
       <div style={{ marginBottom: '1rem' }}>
         <strong>Progress:</strong> {completedSteps} / {totalSteps} steps completed ({percentComplete}%)
       </div>

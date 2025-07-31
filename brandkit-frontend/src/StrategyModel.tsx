@@ -43,6 +43,28 @@ const getSectionStatus = (section: Section, answers: Answers) => {
   return { completed, total, avgScore, status };
 };
 
+const StarRating: React.FC<{ score: number; maxStars?: number }> = ({ score, maxStars = 5 }) => {
+  const stars = [];
+  const filledStars = Math.round((score / 100) * maxStars);
+  
+  for (let i = 0; i < maxStars; i++) {
+    stars.push(
+      <span key={i} style={{ 
+        fontSize: '1.2rem', 
+        color: i < filledStars ? '#FFD700' : '#E0E0E0',
+        marginRight: 2
+      }}>
+        ★
+      </span>
+    );
+  }
+  
+  return <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <span style={{ fontWeight: 600, fontSize: '1.1rem' }}>{score}%</span>
+    <div>{stars}</div>
+  </div>;
+};
+
 const ProgressBar: React.FC<{ percent: number; color?: string; height?: number }> = ({ percent, color = palette.progress, height = 10 }) => (
   <div style={{ background: palette.border, borderRadius: 8, height, width: '100%' }}>
     <div style={{ width: `${percent}%`, background: color, height: '100%', borderRadius: 8, transition: 'width 0.3s' }} />
@@ -231,6 +253,7 @@ const StrategyModel: React.FC = () => {
     setActiveProjectId(newProj.id);
     setShowNewProjectModal(false);
     setSelectedSectionIdx(0);
+    setTab('editor'); // Jump directly to editor
   };
   const handleSwitchProject = (id: string) => {
     setActiveProjectId(id);
@@ -446,10 +469,11 @@ const StrategyModel: React.FC = () => {
           >
             Send Feedback
           </button>
+          <div style={{ marginLeft: '1rem', fontSize: '1.5rem', fontWeight: 'bold', color: palette.progress, cursor: 'pointer' }} title="Got Brand?">GB</div>
         </div>
         {tab === 'home' && (
           <div style={{ maxWidth: 700, margin: '3rem auto 0 auto', background: palette.card, borderRadius: 18, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', border: `1.5px solid ${palette.border}`, padding: '2.5rem 2rem' }}>
-            <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '1.2rem', letterSpacing: 1 }}>Welcome to BrandKit</h1>
+            <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '1.2rem', letterSpacing: 1 }}>Welcome to Got Brand?</h1>
             <p style={{ fontSize: '1.15rem', color: palette.text, marginBottom: '1.5rem', lineHeight: 1.6 }}>
               your all-in-one workspace for building, refining, and managing winning brand strategy. Whether you’re a founder, marketer, or creative, BrandKit helps you structure your thinking and track progress when creating a brand that stands out.
             </p>
@@ -485,13 +509,20 @@ const StrategyModel: React.FC = () => {
         )}
         {tab === 'overview' && (
           <>
-            <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem', letterSpacing: 1 }}>BrandKit Overview</h2>
+            <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem', letterSpacing: 1 }}>Got Brand? Overview</h2>
             {overviewLoading ? (
               <div style={{ marginBottom: '2rem', fontSize: '1.15rem', color: palette.stepInactive }}>Generating AI summary...</div>
             ) : overallConclusion ? (
               <div style={{ marginBottom: '2.5rem', background: palette.card, borderRadius: 16, padding: '2rem', boxShadow: '0 2px 16px rgba(0,0,0,0.07)', border: `1.5px solid ${palette.border}`, fontSize: '1.15rem', color: palette.text }}>
-                <strong>AI Overall Conclusion:</strong>
-                <div style={{ marginTop: 10, fontStyle: 'italic', lineHeight: 1.7 }}>{overallConclusion}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <strong>AI Overall Conclusion:</strong>
+                  {(() => {
+                    const totalScore = sectionStatuses.reduce((sum, section) => sum + (section.avgScore || 0), 0);
+                    const avgScore = sectionStatuses.length > 0 ? Math.round(totalScore / sectionStatuses.length) : 0;
+                    return <StarRating score={avgScore} />;
+                  })()}
+                </div>
+                <div style={{ fontStyle: 'italic', lineHeight: 1.7 }}>{overallConclusion}</div>
               </div>
             ) : null}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
@@ -527,8 +558,8 @@ const StrategyModel: React.FC = () => {
                       {completed} / {total} steps completed
                     </div>
                     <ProgressBar percent={Math.round((completed / total) * 100)} color={palette.progress} height={8} />
-                    <div style={{ marginTop: 12, fontWeight: 600, fontSize: '1.1rem' }}>
-                      Score: {avgScore !== null ? `${avgScore}%` : 'N/A'}
+                    <div style={{ marginTop: 12 }}>
+                      {avgScore !== null ? <StarRating score={avgScore} /> : <span style={{ fontWeight: 600, fontSize: '1.1rem', color: palette.stepInactive }}>No score yet</span>}
                     </div>
                     {overviewLoading ? (
                       <div style={{ marginTop: 18, color: palette.stepInactive, fontStyle: 'italic' }}>Generating AI summary...</div>
@@ -546,7 +577,7 @@ const StrategyModel: React.FC = () => {
         )}
         {tab === 'editor' && (
           <>
-            <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem', letterSpacing: 1 }}>BrandKit Editor</h2>
+            <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem', letterSpacing: 1 }}>Got Brand? Editor</h2>
             {sectionNav}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               {data[selectedSectionIdx].steps.map((step: Step, stepIdx: number) => {
