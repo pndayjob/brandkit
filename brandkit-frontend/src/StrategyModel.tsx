@@ -469,7 +469,17 @@ const StrategyModel: React.FC = () => {
           >
             Send Feedback
           </button>
-          <div style={{ marginLeft: '1rem', fontSize: '1.5rem', fontWeight: 'bold', color: palette.progress, cursor: 'pointer' }} title="Got Brand?">GB</div>
+          <img 
+            src="/logo.png" 
+            alt="Got Brand?" 
+            style={{ 
+              height: '2rem', 
+              width: 'auto', 
+              marginLeft: '1rem',
+              cursor: 'pointer'
+            }} 
+            title="Got Brand?"
+          />
         </div>
         {tab === 'home' && (
           <div style={{ maxWidth: 700, margin: '3rem auto 0 auto', background: palette.card, borderRadius: 18, boxShadow: '0 2px 16px rgba(0,0,0,0.07)', border: `1.5px solid ${palette.border}`, padding: '2.5rem 2rem' }}>
